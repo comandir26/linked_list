@@ -1,7 +1,6 @@
 #pragma once
-
+#include<algorithm>
 namespace my_list {
-
 	template<typename T>
 	struct Node {
 		T _value;
@@ -14,15 +13,47 @@ namespace my_list {
 	class LinkedList {
 	private:
 		Node<T>* _head;
+
 		size_t _size;
+
+		const Node<T>* get_head() const{
+			return _head;
+		}
+
+		Node<T>*& get_head(){
+			return _head;
+		}
+
 	public:
 		LinkedList() : _head(nullptr), _size(0) {}
 
-		size_t get_size() const {
+		LinkedList(const LinkedList<T>& rhs): _head(nullptr), _size(0) {
+			for (size_t i = 0; i < rhs.get_size(); i++)
+			{
+				this->push_tail(rhs[i]->_value);
+			}
+		}
+
+		LinkedList& operator=(const LinkedList<T>& rhs) {
+			LinkedList<T> copy(rhs);
+			swap(copy);
+			return *this;
+		}
+
+		void swap(LinkedList<T>& rhs) {
+			std::swap(_size, rhs.get_size());
+			std::swap(_head, rhs.get_head());
+		}
+
+		const size_t get_size() const {
 			return _size;
 		}
 
-		Node<T>* operator[](size_t index) {
+		size_t& get_size() {
+			return _size;
+		}
+
+		Node<T>* operator[](size_t index) const{
 			Node<T>* p = _head;
 			while (index != 0) {
 				p = p->_next;
@@ -38,6 +69,12 @@ namespace my_list {
 			++_size;
 		}
 
+		void push_head(const LinkedList<T>& rhs) {
+			LinkedList<int> copy(rhs);
+			copy.push_tail(*this);
+			swap(copy);
+		}
+
 		void pop_head() {
 			Node<T>* p = _head;
 			_head = p->_next;
@@ -47,6 +84,11 @@ namespace my_list {
 
 		void push_tail(const T& value) {
 			Node<T>* p = new Node<T>(value);
+			if (_head == nullptr) {
+				_head = p;
+				++_size;
+				return;
+			}
 			Node<T>* h = _head;
 			while (h != nullptr && h->_next != nullptr) {
 				h = h->_next;
@@ -55,9 +97,16 @@ namespace my_list {
 			++_size;
 		}
 
+		void push_tail(const LinkedList<T>& rhs) {
+			for (size_t i = 0; i < rhs.get_size(); i++)
+			{
+				this->push_tail(rhs[i]->_value);
+			}
+		}
+
 		void pop_tail() {
 			Node<T>* h = _head;
-			while (h != nullptr && h->_next != nullptr && h->_next->_next != nullptr)
+			while (h != nullptr && h->_next != nullptr && h->_next->_next != nullptr)//с помощью сайза пойти на предпоследний элемент
 			{
 				h = h->_next;
 			}
@@ -66,6 +115,30 @@ namespace my_list {
 			delete h;
 			p->_next = nullptr;
 			--_size;
+		}
+
+		void delete_node(const T del_value) {
+			Node<T>* h = _head;
+			while (h != nullptr) {
+				if (h->_value == del_value) {
+					
+					Node<T>* p = h;
+					h = h->_next;
+					delete p;
+				}
+				else {
+					h = h->_next;
+				}
+			}
+		}
+
+		~LinkedList(){
+			while (_head != nullptr) {
+				Node<T>* p = _head;
+				_head = p->_next;
+				delete p;
+			}
+			_size = 0;
 		}
 	};
 
