@@ -71,3 +71,22 @@ TEST(FifthTest, push_head_list) {
 	ASSERT_TRUE(list2.get_size() == 6);
 	cout << list2 << '\n';
 }
+
+TEST(SixthTest, delete_node) {
+	LinkedList<int> list1;
+	list1.push_tail(1);
+	list1.push_tail(1);
+	list1.push_tail(2);
+	list1.push_tail(3);
+	list1.push_tail(4);
+	list1.push_tail(1);
+	list1.push_tail(1);
+
+	cout << list1 << '\n';
+	ASSERT_TRUE(list1.get_size() == 7);
+	
+	list1.delete_node(1);
+
+	cout << list1 << '\n';
+	ASSERT_TRUE(list1.get_size() == 3);
+}

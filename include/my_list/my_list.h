@@ -119,14 +119,25 @@ namespace my_list {
 
 		void delete_node(const T del_value) {
 			Node<T>* h = _head;
+			Node<T>* last_node = nullptr;
 			while (h != nullptr) {
+				//Node<T>* prev = h;
 				if (h->_value == del_value) {
-					
 					Node<T>* p = h;
 					h = h->_next;
+					if (_head->_value == del_value) {
+						_head = h;
+						last_node = _head;
+					}
 					delete p;
+					p = nullptr;
+					--_size;
+					if (last_node != nullptr && last_node != h) {
+						last_node->_next = h;
+					}
 				}
 				else {
+					last_node = h;
 					h = h->_next;
 				}
 			}
