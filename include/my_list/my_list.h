@@ -53,7 +53,16 @@ namespace my_list {
 			return _size;
 		}
 
-		Node<T>* operator[](size_t index) const{
+		const Node<T>* operator[](size_t index) const{
+			Node<T>* p = _head;
+			while (index != 0) {
+				p = p->_next;
+				--index;
+			}
+			return p;
+		}
+
+		Node<T>* operator[](size_t index){
 			Node<T>* p = _head;
 			while (index != 0) {
 				p = p->_next;
@@ -75,11 +84,14 @@ namespace my_list {
 			swap(copy);
 		}
 
-		void pop_head() {
+		Node<T>* pop_head() {
+			if (_size == 0) {
+				return nullptr;
+			}
 			Node<T>* p = _head;
 			_head = p->_next;
-			delete p;
 			--_size;
+			return p;
 		}
 
 		void push_tail(const T& value) {
@@ -104,17 +116,20 @@ namespace my_list {
 			}
 		}
 
-		void pop_tail() {
+		Node<T>* pop_tail() {
+			if (_size == 0) {
+				return nullptr;
+			}
 			Node<T>* h = _head;
 			while (h != nullptr && h->_next != nullptr && h->_next->_next != nullptr)//с помощью сайза пойти на предпоследний элемент
 			{
 				h = h->_next;
 			}
 			Node<T>* p = h;
-			h = h->_next;
-			delete h;
-			p->_next = nullptr;
+			p = p->_next;
+			h->_next = nullptr;
 			--_size;
+			return p;
 		}
 
 		void delete_node(const T del_value) {
@@ -157,8 +172,37 @@ namespace my_list {
 	std::ostream& operator<<(std::ostream& os, LinkedList<T>& list) {
 		for (size_t i = 0; i < list.get_size(); i++)
 		{
-			os << list[i]->_value << ' ';
+			os << list[i]->_value << '\n';
+		}
+		if (list.get_size() == 0) {
+			os << '\n';
+			os << "--------";
+			os << '\n';
 		}
 		return os;
+	}
+
+	template<typename T>
+	void print_lists(LinkedList<T>& l1, LinkedList<T>& l2, LinkedList<T>& l3) {
+		std::cout << l1;
+		std::cout << l2;
+		std::cout << l3;
+	}
+	
+	template<typename T>
+	void move(LinkedList<T>& from, LinkedList<T>& dst) {
+		Node<T>* from_top = from.pop_head();
+		if (from_top != nullptr) {
+			dst.push_head(from_top->_value);
+		}
+	}
+	
+	template<typename T>
+	void hanoi_tower(LinkedList<T>& from, LinkedList<T>& temp, LinkedList<T>& dst, size_t tower_height) {
+		if (tower_height > 0) {
+			hanoi_tower(from, dst, temp, tower_height - 1);
+			move(from, dst);
+			hanoi_tower(temp, from, dst, tower_height - 1);
+		}
 	}
 }
