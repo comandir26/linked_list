@@ -121,10 +121,38 @@ TEST(NinethTest, hanoi_tower) {
 	LinkedList<string> l1;
 	LinkedList<string> l2;
 	LinkedList<string> l3;
-	l1.push_tail("   o   ");//0
-	l1.push_tail("  ooo  ");//1
-	l1.push_tail(" ooooo ");//2
+	l1.push_tail("   o   ");
+	l1.push_tail("  ooo  ");
+	l1.push_tail(" ooooo ");
 	print_lists(l1, l2, l3);
 	hanoi_tower(l1, l2, l3, l1.get_size());//перекидываю с первого на третий
 	print_lists(l1, l2, l3);
 }
+
+TEST(TenthTest, get_element) {
+	LinkedList<int> list1;
+	list1.push_tail(1);
+	list1.push_tail(2);
+	list1.push_tail(3);
+	ASSERT_THROW(list1[3], std::out_of_range);
+}
+
+TEST(EleventhTest, pop_tail_two_elem_in_list) {
+	LinkedList<int> list;
+	list.push_tail(4);
+	list.push_tail(5);
+	auto element1 = list.pop_tail();
+	auto element2 = list.pop_tail();
+	ASSERT_TRUE(list.get_size() == 0);
+	ASSERT_TRUE(element1->_value == 5);
+	ASSERT_TRUE(element2->_value == 4);
+}
+
+TEST(TwelfthTest, pop_head_one_elem_in_list) {
+	LinkedList<int> list;
+	list.push_tail(4);
+	auto element = list.pop_head();
+	ASSERT_TRUE(list.get_size() == 0);
+	ASSERT_TRUE(element->_value == 4);
+}
+

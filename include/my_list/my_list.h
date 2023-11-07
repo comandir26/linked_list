@@ -54,6 +54,9 @@ namespace my_list {
 		}
 
 		const Node<T>* operator[](size_t index) const{
+			if (index < 0 || index >= _size) {
+				throw std::out_of_range("LinkedList::operator[], index is out of range");
+			}
 			Node<T>* p = _head;
 			while (index != 0) {
 				p = p->_next;
@@ -63,6 +66,9 @@ namespace my_list {
 		}
 
 		Node<T>* operator[](size_t index){
+			if (index < 0 || index >= _size) {
+				throw std::out_of_range("LinkedList::operator[], index is out of range");
+			}
 			Node<T>* p = _head;
 			while (index != 0) {
 				p = p->_next;
@@ -126,7 +132,9 @@ namespace my_list {
 				h = h->_next;
 			}
 			Node<T>* p = h;
-			p = p->_next;
+			if (_size != 1) {
+				p = p->_next;
+			}
 			h->_next = nullptr;
 			--_size;
 			return p;
@@ -136,7 +144,6 @@ namespace my_list {
 			Node<T>* h = _head;
 			Node<T>* last_node = nullptr;
 			while (h != nullptr) {
-				//Node<T>* prev = h;
 				if (h->_value == del_value) {
 					Node<T>* p = h;
 					h = h->_next;
@@ -179,6 +186,7 @@ namespace my_list {
 			os << "--------";
 			os << '\n';
 		}
+		os << '\n';
 		return os;
 	}
 
@@ -187,6 +195,7 @@ namespace my_list {
 		std::cout << l1;
 		std::cout << l2;
 		std::cout << l3;
+		std::cout << "One disk moved\n";
 	}
 	
 	template<typename T>
@@ -202,6 +211,7 @@ namespace my_list {
 		if (tower_height > 0) {
 			hanoi_tower(from, dst, temp, tower_height - 1);
 			move(from, dst);
+			print_lists(from, dst, temp);
 			hanoi_tower(temp, from, dst, tower_height - 1);
 		}
 	}
