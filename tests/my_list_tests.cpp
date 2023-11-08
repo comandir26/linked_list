@@ -84,9 +84,9 @@ TEST(SixthTest, delete_node) {
 	list1.push_tail(1);
 	cout << list1 << '\n';
 	ASSERT_TRUE(list1.get_size() == 7);
-	list1.delete_node(1);
+	list1.delete_node(2);
 	cout << list1 << '\n';
-	ASSERT_TRUE(list1.get_size() == 3);
+	ASSERT_TRUE(list1.get_size() == 6);
 }
 
 TEST(SeventhTest, pop_head) {
@@ -124,6 +124,7 @@ TEST(NinethTest, hanoi_tower) {
 	l1.push_tail("   o   ");
 	l1.push_tail("  ooo  ");
 	l1.push_tail(" ooooo ");
+	l1.push_tail("ooooooo");
 	print_lists(l1, l2, l3);
 	hanoi_tower(l1, l2, l3, l1.get_size());//перекидываю с первого на третий
 	print_lists(l1, l2, l3);

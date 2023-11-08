@@ -127,15 +127,15 @@ namespace my_list {
 				return nullptr;
 			}
 			Node<T>* h = _head;
-			while (h != nullptr && h->_next != nullptr && h->_next->_next != nullptr)//с помощью сайза пойти на предпоследний элемент
+			while (h->_next != nullptr && h->_next->_next != nullptr)//с помощью сайза пойти на предпоследний элемент
 			{
 				h = h->_next;
 			}
 			Node<T>* p = h;
 			if (_size != 1) {
 				p = p->_next;
+				h->_next = nullptr;
 			}
-			h->_next = nullptr;
 			--_size;
 			return p;
 		}
@@ -195,7 +195,7 @@ namespace my_list {
 		std::cout << l1;
 		std::cout << l2;
 		std::cout << l3;
-		std::cout << "One disk moved\n";
+		std::cout << "Moved\n\n";
 	}
 	
 	template<typename T>
